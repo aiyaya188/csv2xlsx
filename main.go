@@ -65,3 +65,19 @@ func main() {
 		return
 	}
 }
+
+func ExeCommandShell(cmdString string) (string, error) {
+	cmd := exec.Command("/bin/bash", "-c", cmdString)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		return "", errors.New(string(stderr.Bytes()))
+	}
+	outStr := string(stdout.Bytes())
+	//res := fmt.Sprintf("out:\n%s\nerr:\n%s\n", outStr, errStr)
+	//log.Info("cmd res:", res)
+	return outStr, nil
+}
+
